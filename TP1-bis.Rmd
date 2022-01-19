@@ -1,0 +1,181 @@
+---
+title: "R Notebook"
+author: "Mlamali SAID SALIMO"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "pdf") })
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r}
+data_varicelle = scan(file="data/varicelle.dat",skip=1)
+head(data_varicelle)
+```
+```{r}
+plot(data_varicelle)
+```
+On transforme les données en serie temporelles. 
+```{r}
+serie = ts(data_varicelle,frequency = 12) #frequence pour avoir les années en absciesse (les données menseulles)
+serie
+```
+
+```{r}
+plot(serie) #dessiner le graphique
+```
+si on ne voit pas grand chose on peut lisser la courbe
+```{r}
+x = serie
+plot(x)
+plot(x,type='p')
+k = 20
+lines(filter(x,rep(1/k,k)), col='red', lwd=3)
+# prendre 20 valeur de x aléaotoire
+```
+
+## Question 2 - Analyser la série
+
+On ne voit pas de tendance mais on voit un saisonnalité
+
+Pour mieux voir la saisonnalité, on peut zoomer sur une durée plus petite. Les 50 premiers mois par exemple.
+
+```{r}
+serie_z = ts(data_varicelle,2,50)
+plot(serie_z)
+```
+
+## Question 3 - calcul de la moyenne
+
+```{r}
+mean(serie)
+```
+## Question 4 - ACF des 25 premières auto-corrélations
+
+Def et objectif Fct de auto-corréalation :
+
+
+```{r}
+#On rentre l'instruction 
+acf(serie,lag.max=25,type=c("correlation"))
+```
+
+
+---
+
+on voit que ça converge, mais lentement. Tout ce qui est à l'interieur de l'invalle on le considère statistiquement nulle (non significatif). Elle converge tjr vers 0 chakal la juste lentement
+
+- on oberse une saisonnalité
+la saisonnalité obersé graphiqmenet est confirmé par la fct de autocorréaltion. 
+
+On a fait avec 25 valeur et sa sufifit largement
+---
+La fonction d'autocorréalation est périodique, ce qui indique une périodicité de la série temporelle. 
+
+La ligne pointillé bleu indique le niveau en dessous duquel la corréalation n'est plus statistiquement significative
+
+## Question 5 - Tracer sur un même graphique 
+
+Les évolution mesuelle de cas varicelles pour chaque année
+
+```{r}
+plot(serie[1:12],type="l",ylim=c(min(serie),max(serie)))
+for (i in 1 : 41) lines(serie[(1+12*i) : (12*(i+1))],col="grey")
+```
+```{r}
+
+```
+
+## Question 6 : Tracer sur un graphique l..
+
+```{r}
+x=rep(0,41)
+for(i in 0 : 40) x[i+1] = sum(serie[(1+12*i) : (12*(i+1))])
+x
+```
+```{r}
+plot(x,type="l", xaxt='n', xlab='')
+axis(1,at = 0 : 40,labels = 1931 : 1971)
+```
+la c'est lévolution annulles du nombre de cas de varicielle (tout à l'heure ct l'evolution mensuelle pour chaque année)
+
+Remarques :
+- a partir de 1955, la tendance de la diminution a été confirmé 
+- ca c'est été maitriser (la maladie) vers 1971
+
+
+# Exercice 2
+
+## 1) 
+
+voir photo
+
+## 2) Simuler un .
+
+```{r}
+v = rnorm(100,0,1)
+plot(1 : 100, v)
+```
+## 3) traver la fct de auto
+
+```{r}
+acf(v,lag.max = 24,type = c("correlation"))
+```
+- absiciser : h, ordonnée ro(h)
+"normalement on devrai pas avoir plus de 5 valeur à l'exterieur de l'intervalle : psk nanani 5% param rnorm"
+"les termes sont corrélarer sauf ro de 0, donc le graphique reflete bien la pertie théorique
+
+y'a pas dévolution de la, sur le graphique tous les valeur de ro de 1 sont tout statistiquement non signiicative
+
+rappel : l'intervalle de confiance d'pende de n
+
+
+## 4) Recommencer les deux question et oberser la variabilité
+
+## 5) simuler la série temporelle
+
+avant ct un bruit blac, mtn une serie avec tendance
+
+```{r}
+v = rnorm(100,mean=0,sd=1)
+t = 1:100
+
+x = 0.5*t+2*v
+xs = ts(x)
+xs
+```
+
+
+```{r}
+plot(xs)
+acf(xs,lag.max = 25,type = c("correlation"))
+```
+Title : Suite à tendance croissante
+en général
+
+Xt = 5t + Eps_t
+
+E(Xt) = 5t
+
+la serie Xt n'est pas statiionnaire, ya une tendance (la moyenne n'est pas constance). Cette tendance ça se voit graph de fct de autocorrélatio : on obserse une décvroissance lente de  quel converge vers 0 mais très lentement
+
+## Q7
+
+```{r}
+t = 1:100
+v = rnorm(100,mean=0,sd=1)
+
+x = 0.5*t+2*v
+xs = ts(x)
+xs
+```
+
+
+```{r}
+plot(xs)
+acf(xs,lag.max = 25,type = c("correlation"))
+```
+
+Voire un petit souci. Normalement la saisonnalité doit se manifester là. pk elle se manifeste pas ? Parce quelle est absorbé par la tendance (il faut dimininuer le coeef sur le 0.5t)
+

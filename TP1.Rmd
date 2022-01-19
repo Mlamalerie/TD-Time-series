@@ -1,0 +1,140 @@
+---
+title: "R Notebook"
+author: "Mlamali SAID SALIMO"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "pdf") })
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+# 1. CRÉATION DE LA VARIABLE TEMPS
+
+```{r}
+date()
+```
+```{r}
+dates = c("17/02/18", "27/02/18", "14/01/18", "28/02/18")
+dates
+```
+```{r}
+class(dates)
+```
+```{r}
+dates = as.Date(dates)
+print(class(dates))
+dates
+```
+```{r}
+dates <- as.Date(dates, "%d/%m/%y")
+dates
+```
+
+```{r}
+difftime(dates[1], dates[4])
+```
+```{r}
+difftime(dates[1], dates[4],units = "s")
+```
+
+---
+Générer une séquence de dates avec la fonction usuelle seq 
+
+```{r}
+d1 <- seq(from = as.Date("01/01/18", "%d/%m/%y"), by = "day",length.out = 31)
+d1
+```
+```{r}
+d2 <- seq(from = as.Date("01/01/18", "%d/%m/%y"), by = "month",length.out = 12)
+d2
+```
+```{r}
+d3<-seq(from=as.Date("01/01/18","%d/%m/%y"),to= as.Date("31/01/18","%d/%m/%y"),
+length.out=15)
+d3
+```
+On note que dans ce cas **to** et **length.out** apparaissent en même temps. Il faut calculer la longueur au préalable pour que cela tombe juste. On ne peut alors pas mettre by.
+
+---
+
+Simulation normae
+
+```{r}
+print(length(d1))
+d1
+```
+
+
+```{r}
+temperatures <- rnorm(length(d1), mean = 5)
+temperatures
+```
+```{r}
+plot(x=d1, y=temperatures, type="b",xlab="",ylab="Temperatures",
+main="Temperatures du mois de janvier 2018")
+```
+
+FAIRE SNCF §
+
+# 2. CRÉATION d’une Série Temporelle
+
+```{r}
+temperatures
+```
+
+
+```{r}
+temperature <- ts(data = temperatures, start = 0, end = 31)
+temperature
+```
+```{r}
+class(temperature)
+```
+**• Exemple : Mesures prises toutes les 30 s pendant 5 min.**
+
+
+```{r}
+s1 <- ts(data=rnorm(11),start=0, end=5*60, frequency= 1/30)
+s1
+```
+```{r}
+plot(s1)
+```
+• Exemple : Données mensuelles sur 3 ans à partir de janvier 2015
+
+```{r}
+s2 <- ts(data = rnorm(36), start = c(2015,1), frequency = 12)
+s2
+```
+• à partir de mai 2015
+
+```{r}
+s2 <- ts(data = rnorm(36), start = c(2015,5), frequency = 12)
+s2
+```
+
+On peut aussi zoomer sur la série avec l’instruction window
+```{r}
+plot(window(s2,start=c(2015,8),end=c(2015,12)),ylab="")
+```
+
+
+• Création de 
+
+
+## QUESTION SNCF LAAA
+
+```{r}
+data_sncf_mens = read.table("data/SNCF-Mens.txt")
+```
+
+le trafic voyage SNCF de 1970 ya une tendance qui s'est dégagé d'une facon net et croisaante. Avant les années 70 peut etre les gesns prennait pas trop le train
+e
+
+on utilise la fct différence pour *** la tendance
+
+
+observé
+trend = tendance
+

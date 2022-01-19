@@ -1,0 +1,48 @@
+---
+title: 'Chap 1 : Vocab et généralité'
+output:
+  pdf_document: default
+---
+
+```{r}
+n = 100
+serie = 2*(1 : n) + 4
+par(mfrow=c(1,2))
+plot(ts(serie))
+acf(serie)
+```
+
+```{r}
+n = 10^6
+serie = 2*(1 : n) + 4
+par(mfrow=c(1,2))
+plot(ts(serie))
+acf(serie)
+```
+
+```{r}
+n = 100
+p = 25
+serie = 2*cos(2*pi*(1 : n)/p)
+par(mfrow=c(1,2))
+plot(ts(serie))
+acf(serie)
+```
+
+```{r}
+n = 10^5
+p = 25
+serie = 2*cos(2*pi*(1 : n)/p)
+par(mfrow=c(1,2))
+plot(ts(serie))
+acf(serie)
+```
+```{r}
+plot(cos(2*pi*(0 : 50)/p),type = "l")
+```
+
+
+
+
+
+
