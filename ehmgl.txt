@@ -1,0 +1,5 @@
+note TP3 autonomie
+
+plot
+
+mounthplot nous permet de voir que y'a une saisonnalité mensuelle
